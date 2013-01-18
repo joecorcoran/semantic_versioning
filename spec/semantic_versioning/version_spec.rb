@@ -6,7 +6,7 @@ describe SemanticVersioning::Version do
 
   let(:ver) { v('1.2.3-pre.1+build.2') }
 
-  describe 'accepts only SemanticVersioningTag formatted strings' do
+  describe 'accepts only properly formatted strings' do
     specify do
       lambda { v('1.0.0-beta.1') }.should_not raise_error
       lambda { v('1.0.0.0') }.should raise_error(SemanticVersioning::VersionError)
