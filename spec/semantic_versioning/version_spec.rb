@@ -9,7 +9,7 @@ describe SemanticVersioning::Version do
   describe 'accepts only properly formatted strings' do
     specify do
       lambda { v('1.0.0-beta.1') }.should_not raise_error
-      lambda { v('1.0.0.0') }.should raise_error(SemanticVersioning::VersionError)
+      lambda { v('1.0.0.0') }.should raise_error(SemanticVersioning::ParsingError)
     end
   end
 
@@ -22,9 +22,9 @@ describe SemanticVersioning::Version do
   end
 
   describe 'segments' do
-    specify { ver.segments.req.should   be_a SemanticVersioning::Segment }
-    specify { ver.segments.pre.should   be_a SemanticVersioning::Segment }
-    specify { ver.segments.build.should be_a SemanticVersioning::Segment }
+    specify do
+      ver.segments.all? { |s| s.is_a?(SemanticVersioning::Segment) }.should be_true
+    end
   end
 
   describe 'comparisons from semver.org' do
