@@ -2,9 +2,6 @@ require 'spec_helper'
 
 describe SemanticVersioning::Version do
 
-  def v(i); SemanticVersioning::Version.new(i); end
-
-  let(:ver) { v('1.2.3-pre.1+build.2') }
   let(:version) { v('1.2.3-pre.1+build.2') }
 
   describe 'accepts only properly formatted strings' do

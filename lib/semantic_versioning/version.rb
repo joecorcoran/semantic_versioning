@@ -44,6 +44,14 @@ module SemanticVersioning
       scores.compact.detect { |s| s.abs == 1 }
     end
 
+    def eql?(other)
+      self == other
+    end
+
+    def hash
+      to_s.hash
+    end
+
     def to_s
       version = "#{@major}.#{@minor}.#{@patch}"
       version += "-#{@pre}" unless pre.nil?
