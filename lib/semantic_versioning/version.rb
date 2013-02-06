@@ -1,4 +1,5 @@
 module SemanticVersioning
+  
   class Version
 
     include Comparable
@@ -13,7 +14,9 @@ module SemanticVersioning
       (\+(?<build>[0-9A-Za-z\-\.]+))?
     $/x
 
-    attr_reader :major, :minor, :patch, :required, :pre, :build, :segments
+    attr_reader :major, :minor, :patch, :required, :segments
+    attr_accessor :pre, :build
+    alias_method :prerelease, :pre
 
     def initialize(input, segment = Segment)
       if (m = input.match(PATTERN))
@@ -42,8 +45,39 @@ module SemanticVersioning
     end
 
     def to_s
-      @input
+      version = "#{@major}.#{@minor}.#{@patch}"
+      version += "-#{@pre}" unless pre.nil?
+      version += "+#{@build}" unless build.nil?
+      version
     end
+
+    def increment(identifier)
+      case identifier
+      when :major
+        @major += 1
+        reset(:minor, :patch)
+      when :minor
+        @minor += 1
+        reset(:patch)
+      when :patch
+        @patch += 1
+      else
+        raise IncrementError, 'Only :major, :minor and :patch attributes may be incremented'
+      end
+      clear_optional_identifiers
+    end
+
+    private
+
+      def reset(*identifiers)
+        identifiers.each do |id|
+          instance_variable_set(:"@#{id}", 0)
+        end
+      end
+
+      def clear_optional_identifiers
+        @pre, @build = nil, nil
+      end
 
   end
 
