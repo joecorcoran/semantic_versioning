@@ -9,11 +9,11 @@ Utility for working with software versions as specified by [Semantic Versioning 
 Create a version object from a SemVer-formatted string.
 
 ```ruby
-version = SemanticVersioning::Version.new('1.2.0')
+version = SemanticVersioning::Version.new('1.2.0-pre.1+b.42')
 version.major
   # => 1
 version.build
-  # => nil
+  # => "b.42"
 ```
 
 Increment version identifiers.
@@ -27,7 +27,7 @@ version
 Compare versions.
 
 ```ruby
-current = SemanticVersioning::Version.new('1.2.0')
+current = SemanticVersioning::Version.new('1.2.0-pre.1')
 previous = SemanticVersioning::Version.new('1.1.12')
 current > previous
   # => true
@@ -38,12 +38,12 @@ current > previous
 Work with sorted version sets.
 
 ```ruby
-versions = SemanticVersioning::VersionSet.new([current])
-  # => #<SemanticVersioning::VersionSet: {1.2.0}>
-versions << previous
-  # => #<SemanticVersioning::VersionSet: {1.1.12, 1.2.0}>
+versions = SemanticVersioning::VersionSet.new(['1.2.0-pre.3', '1.3.0'])
+  # => #<SemanticVersioning::VersionSet: {1.2.0-pre.3, 1.3.0}>
+versions << SemanticVersioning::Version.new('1.1.12')
+  # => #<SemanticVersioning::VersionSet: {1.1.12, 1.2.0-pre.3, 1.3.0}>
 versions.where(:>=, '1.1.13')
-  # => #<SemanticVersioning::VersionSet: {1.2.0}>
+  # => #<SemanticVersioning::VersionSet: {1.2.0-pre.3, 1.3.0}>
 ```
 
 ## License
