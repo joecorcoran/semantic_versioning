@@ -84,7 +84,8 @@ module SemanticVersioning
       end
 
       def clear_optional_identifiers
-        @pre, @build = nil, nil
+        @pre   = nil
+        @build = nil
       end
 
   end
