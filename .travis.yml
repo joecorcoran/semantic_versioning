@@ -3,6 +3,8 @@ rvm:
   - jruby-19mode
   - rbx-19mode
   - 2.0.0
+before_install:
+  - "gem install bundler"
 script: "rspec"
 notifications:
   email:
